@@ -24,12 +24,15 @@ export default {
           dates: new Date(year, month, day),
         },
         {
-          highlight: {
-            start: { fillMode: 'outline' },
-            base: { fillMode: 'light' },
-            end: { fillMode: 'outline' },
-          },
           dates: { start: new Date(year, month, 14), end: new Date(year, month, 30) },
+          dot: {
+            color: 'red',
+            class: 'price-text-below-date',
+          },
+          popover: {
+            label: 'RM 775',
+            hideIndicator: true,
+          },
         },
       ],
     };
@@ -47,6 +50,9 @@ export default {
 <style>
   .vc-container {
     /* --text-sm: 18px; */
+  }
+  .vc-day {
+    margin: 2px;
   }
   .vc-day-content {
     width: 42px !important;
