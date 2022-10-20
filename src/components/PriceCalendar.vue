@@ -2,7 +2,7 @@
   <v-calendar :attributes="attrs">
     <template v-slot:day-content="{ day, attributes }">
       <div
-        class="flex flex-col h-full z-10 overflow-hidden"
+        class="day-content-with-price"
         v-for="attr in attributes"
         :key="attr.key"
       >
@@ -68,14 +68,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+.day-content-with-price {
+  padding-top: 3px;
+}
 .vc-day {
-  margin: 2px;
-  width: 42px !important;
-  height: 42px !important;
+  width: 46px !important;
+  height: 46px !important;
+}
+.vc-day:hover {
+  background: #eee;
+  border-radius: var(--rounded-full);
+  cursor: pointer;
 }
 .vc-day-content {
-  width: 42px !important;
-  height: 42px !important;
+  width: 46px !important;
+  height: 46px !important;
 }
 .vc-highlight {
   width: 100% !important;
