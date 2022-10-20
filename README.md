@@ -3,23 +3,13 @@
 ## Project setup
 
 ```
-yarn install or npm install
+npm install
 ```
 
-### Compiles and hot-reloads for development
+### Run for development
 
 ```
-yarn serve or npm run serve
+npm run serve
 ```
 
-### Compiles and minifies for production
-
-```
-yarn build or npm run build
-```
-
-### Lints and fixes files
-
-```
-yarn lint or npm run lint
-```
+### And then goto localhost:8080
