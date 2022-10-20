@@ -2,8 +2,13 @@
   <v-calendar :attributes="attrs">
     <template v-slot:day-content="{ day, attributes }">
       <div
-        class="day-content-with-price"
+        :class="
+          'day-content-with-price' +
+          (selectedDate == attr.customData.id ? ' selected-date' : '')
+        "
         v-for="attr in attributes"
+        @click="selectDate(attr.customData.id)"
+        :id="attr.customData.id"
         :key="attr.key"
       >
         <span class="day-label text-sm day-with-price">{{ day.day }}</span>
@@ -28,40 +33,34 @@ export default {
   name: 'PriceCalendar',
   data() {
     const date = new Date()
-    const updatedPrices = this.prices.map((value) => {
-      if (value.date.getDate() === date.getDate()) {
-        return {
-          key: value.toString(),
-          ...value,
-          highlight: {
-            color: 'red',
-            fillMode: 'solid',
-          },
-        }
-      }
-
-      return {
-        key: value.toString(),
-        ...value,
-      }
-    })
+    const getIdFromDate = (date) =>
+      'id' + date.getYear() + date.getMonth() + date.getDate()
+    const selectedDate = getIdFromDate(date)
 
     return {
       attrs: [
-        ...updatedPrices.map((priceInfo) => ({
-          key: priceInfo.key,
-          highlight: priceInfo.highlight,
+        ...this.prices.map((priceInfo) => ({
+          key: priceInfo.date.toString(),
           dates: priceInfo.date,
-          customData: priceInfo,
+          customData: {
+            id: getIdFromDate(priceInfo.date),
+            ...priceInfo,
+          },
         })),
       ],
+      selectedDate: selectedDate,
     }
+  },
+  props: {
+    prices: Array,
   },
   components: {
     VCalendar,
   },
-  props: {
-    prices: Array,
+  methods: {
+    selectDate(id) {
+      this.selectedDate = id
+    },
   },
 }
 </script>
@@ -70,15 +69,25 @@ export default {
 <style>
 .day-content-with-price {
   padding-top: 3px;
+  height: 100%;
+  font-weight: bold;
 }
 .vc-day {
   width: 46px !important;
   height: 46px !important;
 }
-.vc-day:hover {
-  background: #eee;
-  border-radius: var(--rounded-full);
+.day-content-with-price {
   cursor: pointer;
+  border-radius: var(--rounded-full);
+}
+.day-content-with-price:hover {
+  background: #eee;
+}
+.selected-date {
+  background: #e55;
+}
+.selected-date:hover {
+  background: #e55;
 }
 .vc-day-content {
   width: 46px !important;
@@ -94,7 +103,13 @@ export default {
 .vc-highlights + div > .day-with-price + div {
   color: #fff;
 }
+.selected-date.day-content-with-price > .day-with-price {
+  color: #fff;
+}
+.selected-date.day-content-with-price > .day-with-price + div {
+  color: #fff;
+}
 .day-with-price {
-  color: #f00;
+  color: #e55;
 }
 </style>
