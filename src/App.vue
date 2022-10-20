@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <PriceCalendar :prices="prices"/>
+    <PriceCalendar :prices="prices" />
   </div>
 </template>
 
@@ -10,12 +10,12 @@ import PriceCalendar from './components/PriceCalendar.vue'
 export default {
   name: 'App',
   components: {
-    PriceCalendar
+    PriceCalendar,
   },
   data() {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth()
 
     return {
       prices: [
@@ -88,7 +88,7 @@ export default {
           price: 'RM 399',
         },
       ],
-    };
+    }
   },
 }
 </script>
