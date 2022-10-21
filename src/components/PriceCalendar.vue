@@ -58,13 +58,13 @@ export default {
   },
   methods: {
     changeDate() {
-      const dateList = document.querySelectorAll('.vc-day')
+      this.attrs.forEach((attr) => {
+        const dateList = document.querySelectorAll(
+          `.${attr.key} > .vc-day-content`,
+        )
 
-      dateList.forEach((dateElement) => {
-        this.attrs.forEach((attr) => {
-          if (dateElement.classList.contains(attr.key)) {
-            dateElement.setAttribute('aria-price', attr.label)
-          }
+        dateList.forEach((dateElement) => {
+          dateElement.setAttribute('aria-price', attr.label)
         })
       })
     },
@@ -74,49 +74,35 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-.day-content-with-price {
-  padding-top: 3px;
-  height: 100%;
-  font-weight: bold;
-}
 .vc-day {
   width: 46px !important;
-  height: 46px !important;
+  height: 50px !important;
 }
-.day-content-with-price {
-  cursor: pointer;
-  border-radius: var(--rounded-full);
+.vc-day-content[aria-price] {
+  color: #e00 !important;
+  padding-bottom: 14px;
 }
-.day-content-with-price:hover {
-  background: #eee;
+.vc-day-content[aria-price]:after {
+  clear: both;
+  display: block;
+  content: attr(aria-price);
+  font-size: 8px;
+  position: absolute;
+  bottom: 4px;
+  color: black;
 }
-.selected-date {
-  background: #e55;
-}
-.selected-date:hover {
-  background: #e55;
+.vc-highlights + .vc-day-content[aria-price]:after {
+  color: #fff;
 }
 .vc-day-content {
   width: 46px !important;
-  height: 46px !important;
+  height: 50px !important;
 }
 .vc-highlight {
-  width: 100% !important;
-  height: 100% !important;
+  width: 46px !important;
+  height: 46px !important;
 }
-.vc-highlights + div > .day-with-price {
-  color: #fff;
-}
-.vc-highlights + div > .day-with-price + div {
-  color: #fff;
-}
-.selected-date.day-content-with-price > .day-with-price {
-  color: #fff;
-}
-.selected-date.day-content-with-price > .day-with-price + div {
-  color: #fff;
-}
-.day-with-price {
-  color: #e55;
+.vc-day-content {
+  --text-sm: 16px;
 }
 </style>
