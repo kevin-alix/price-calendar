@@ -2,15 +2,22 @@
   <v-date-picker
     :attributes="attrs"
     :min-date="minDate"
-    :masks="masks"
     v-model="range"
     is-range
+    v-on="changeDate()"
   />
 </template>
 
 <script>
-// import VCalendar from 'v-calendar/lib/components/calendar.umd'
 import VDatePicker from 'v-calendar/lib/components/date-picker.umd'
+
+const getIdFromDate = (date) =>
+  'id-' +
+  date.getFullYear() +
+  '-' +
+  (date.getMonth() + 1) +
+  '-' +
+  date.getDate()
 
 export default {
   name: 'PriceCalendar',
@@ -18,28 +25,21 @@ export default {
     const date = new Date()
     const year = date.getFullYear()
     const month = date.getMonth()
-    const getIdFromDate = (date) =>
-      'id' + date.getYear() + date.getMonth() + date.getDate()
-    const selectedDate = getIdFromDate(date)
 
     return {
       attrs: [
         ...this.prices.map((priceInfo) => ({
-          key: priceInfo.date.toString(),
+          key: getIdFromDate(priceInfo.date),
           label: priceInfo.price,
           content: 'red',
-          dates: priceInfo.date,
           class: 'day-content-with-price',
+          dates: priceInfo.date,
           customData: {
             id: getIdFromDate(priceInfo.date),
             ...priceInfo,
           },
         })),
       ],
-      selectedDate: selectedDate,
-      masks: {
-        title: 'YYYY-MM-DD',
-      },
       range: {
         start: new Date(year, month, 11),
         end: new Date(year, month, 27),
@@ -51,8 +51,23 @@ export default {
     prices: Array,
   },
   components: {
-    // VCalendar,
     VDatePicker,
+  },
+  mounted() {
+    this.changeDate()
+  },
+  methods: {
+    changeDate() {
+      const dateList = document.querySelectorAll('.vc-day')
+
+      dateList.forEach((dateElement) => {
+        this.attrs.forEach((attr) => {
+          if (dateElement.classList.contains(attr.key)) {
+            dateElement.setAttribute('aria-price', attr.label)
+          }
+        })
+      })
+    },
   },
 }
 </script>
