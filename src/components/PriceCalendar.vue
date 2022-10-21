@@ -3,6 +3,7 @@
     :attributes="attrs"
     :min-date="minDate"
     v-model="range"
+    color="red"
     is-range
     v-on="changeDate()"
   />
@@ -89,10 +90,19 @@ export default {
   font-size: 8px;
   position: absolute;
   bottom: 4px;
-  color: black;
+  color: #000;
 }
 .vc-highlights + .vc-day-content[aria-price]:after {
   color: #fff;
+}
+.vc-highlights + .vc-day-content[aria-price] {
+  color: #fff !important;
+}
+.vc-highlight {
+  background: #e88 !important;
+}
+.vc-day-layer + .vc-day-layer > .vc-highlight {
+  background: #e33 !important;
 }
 .vc-day-content {
   width: 46px !important;
