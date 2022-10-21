@@ -1,38 +1,23 @@
 <template>
-  <v-calendar :attributes="attrs">
-    <template v-slot:day-content="{ day, attributes }">
-      <div
-        :class="
-          'day-content-with-price' +
-          (selectedDate == attr.customData.id ? ' selected-date' : '')
-        "
-        v-for="attr in attributes"
-        @click="selectDate(attr.customData.id)"
-        :id="attr.customData.id"
-        :key="attr.key"
-      >
-        <span class="day-label text-sm day-with-price">{{ day.day }}</span>
-        <div class="flex-grow overflow-y-auto overflow-x-auto">
-          <div
-            class="text-xs leading-tight rounded-sm p-1 mt-0 mb-1"
-            style="font-size: 8px;"
-            :class="attr.customData.class"
-          >
-            {{ attr.customData.price }}
-          </div>
-        </div>
-      </div>
-    </template>
-  </v-calendar>
+  <v-date-picker
+    :attributes="attrs"
+    :min-date="minDate"
+    :masks="masks"
+    v-model="range"
+    is-range
+  />
 </template>
 
 <script>
-import VCalendar from 'v-calendar/lib/components/calendar.umd'
+// import VCalendar from 'v-calendar/lib/components/calendar.umd'
+import VDatePicker from 'v-calendar/lib/components/date-picker.umd'
 
 export default {
   name: 'PriceCalendar',
   data() {
     const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth()
     const getIdFromDate = (date) =>
       'id' + date.getYear() + date.getMonth() + date.getDate()
     const selectedDate = getIdFromDate(date)
@@ -41,7 +26,10 @@ export default {
       attrs: [
         ...this.prices.map((priceInfo) => ({
           key: priceInfo.date.toString(),
+          label: priceInfo.price,
+          content: 'red',
           dates: priceInfo.date,
+          class: 'day-content-with-price',
           customData: {
             id: getIdFromDate(priceInfo.date),
             ...priceInfo,
@@ -49,18 +37,22 @@ export default {
         })),
       ],
       selectedDate: selectedDate,
+      masks: {
+        title: 'YYYY-MM-DD',
+      },
+      range: {
+        start: new Date(year, month, 11),
+        end: new Date(year, month, 27),
+      },
+      minDate: new Date(year, month, 6),
     }
   },
   props: {
     prices: Array,
   },
   components: {
-    VCalendar,
-  },
-  methods: {
-    selectDate(id) {
-      this.selectedDate = id
-    },
+    // VCalendar,
+    VDatePicker,
   },
 }
 </script>
